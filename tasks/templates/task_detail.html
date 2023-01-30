@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <main class="container">
+    <div class="row">
+      <div class="col-md-4 offset-md-4">
+        <div class="card card-body mb-2">
+          <h1 class="text-secondary">{{task.title}}</h1>
+
+          {{error}}
+          
+          {% if task.datecompleted is null %}
+          <form method="POST" class="disabled">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-primary">
+              Update
+            </button>
+          </form>
+          {% else %}
+            {{form.as_p}}
+          {% endif %}
+
+          <div class="mt-4 d-flex justify-content-between">
+              <form action="{% url 'complete_task' task.id %}" method="POST">
+                {% if task.datecompleted is null %}
+                {% csrf_token %}
+                  <button class="btn btn-secondary ">
+                    Complete
+                  </button>
+                {% endif %}
+              </form>
+        
+            <form action="{% url 'delete_task' task.id %}" method="POST">
+              {% csrf_token %}
+              <button class="btn btn-danger mx-2">
+                delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+<!--
+  <h1>{{task.title}}</h1>
+
+  {{error}}
+
+  <form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <button>
+      Update
+    </button>
+  </form>
+
+  {% if task.datecompleted is null %}
+    <form action="{% url 'complete_task' task.id %}" method="POST">
+      {% csrf_token %}
+      <button>
+        complete
+      </button>
+    </form>
+  {% endif %}
+
+  <form action="{% url 'delete_task' task.id %}" method="POST">
+    {% csrf_token %}
+    <button>
+      delete
+    </button>
+  </form>
+-->
+{% endblock %}
